@@ -58,8 +58,7 @@ export async function checkEnvVars(projectPath: string, framework: Framework): P
   // Provide helpful info about env vars that should be set in Railway
   if (envVars.size > 0) {
     const commonEnvVars = ["PORT", "NODE_ENV", "DATABASE_URL"];
-    // TODO: i forgot what i was doing here...
-    const foundCommonVars = Array.from(envVars).filter(v => commonEnvVars.includes(v));
+    // Filter out common Railway-provided vars and npm internal vars
     const otherVars = Array.from(envVars).filter(v => !commonEnvVars.includes(v) && !v.includes("npm_"));
 
     if (otherVars.length > 0) {

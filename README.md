@@ -31,6 +31,28 @@ Railway Doctor catches these issues locally in seconds, with actionable fix sugg
 
 ## Installation
 
+Install globally with npm:
+
+```bash
+npm install -g railway-doctor
+```
+
+Or use directly without installing (via npx):
+
+```bash
+npx railway-doctor scan
+```
+
+With Bun:
+
+```bash
+bunx railway-doctor scan
+```
+
+### For Development
+
+To contribute or run from source:
+
 ```bash
 # Clone the repository
 git clone https://github.com/wsoule/railway-doctor
@@ -38,53 +60,14 @@ cd railway-doctor
 
 # Install dependencies
 bun install
-```
 
-### Make it a Global Executable
-
-To run `railway-doctor` from any directory:
-
-```bash
-# Make the CLI file executable
-chmod +x src/cli.ts
-
-# Link it globally
-bun link
-
-# Add Bun's global bin directory to your PATH (if not already added)
-echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
-source ~/.zshrc  # Reload your shell, or open a new terminal
-
-# Now you can run from anywhere
-railway-doctor scan /path/to/your/project
-```
-
-To uninstall the global link later:
-
-```bash
-bun unlink
-```
-
-**Alternative: Add to PATH manually**
-
-You can also add the project directory to your PATH:
-
-```bash
-# Add to your ~/.zshrc or ~/.bashrc
-export PATH="$PATH:/path/to/railway-doctor"
-
-# Make the CLI executable
-chmod +x src/cli.ts
-
-# Reload your shell
-source ~/.zshrc  # or ~/.bashrc
+# Run directly
+bun run src/cli.ts scan
 ```
 
 ## Usage
 
 ### Scan a project
-
-**After installing globally** (using `bun link`):
 
 ```bash
 # Scan current directory
@@ -100,20 +83,14 @@ railway-doctor scan --verbose
 railway-doctor scan --json
 ```
 
-**For local development** (without global install):
+**Using npx** (no installation required):
 
 ```bash
 # Scan current directory
-bun run src/cli.ts scan
+npx railway-doctor scan
 
 # Scan specific directory
-bun run src/cli.ts scan ./my-project
-
-# Show all checks including passed ones
-bun run src/cli.ts scan --verbose
-
-# Output as JSON (for CI/CD)
-bun run src/cli.ts scan --json
+npx railway-doctor scan ./my-project
 ```
 
 ### Example Output
@@ -326,12 +303,12 @@ Built with:
 - [x] Refactored PORT and host checks for comprehensive coverage
 - [x] Standardized check interfaces for consistency
 - [x] No more "unknown framework" dead-ends
+- [x] **Published to npm** - Available via `npm install -g railway-doctor`
 
 ### Future Enhancements (v0.4.0+)
 - [ ] Static files configuration checks (Django whitenoise, Express static)
 - [ ] Auto-fix mode (--fix flag to automatically apply fixes)
 - [ ] CI/CD integration (GitHub Action)
-- [ ] Build and publish to npm
 - [ ] More frameworks (Ruby, Go, Rust)
 - [ ] Railway config file generation (railway.json/railway.toml)
 - [ ] Web version for online scanning

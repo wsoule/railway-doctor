@@ -1,16 +1,18 @@
 {
   "name": "railway-doctor",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Diagnose Railway deployment issues before you deploy",
   "module": "index.ts",
   "type": "module",
   "bin": {
-    "railway-doctor": "./src/cli.ts"
+    "railway-doctor": "./dist/cli.js"
   },
   "scripts": {
     "dev": "bun run src/cli.ts scan",
-    "start": "bun run src/cli.ts"
+    "start": "bun run src/cli.ts",
+    "build": "bun build src/cli.ts --outdir dist --target node --format esm && chmod +x dist/cli.js"
   },
+  "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
   "keywords": ["railway", "deployment", "debugging", "cli"],
   "devDependencies": {
     "@types/bun": "latest",
