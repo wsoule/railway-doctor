@@ -10,7 +10,7 @@ const program = new Command();
 program
   .name("railway-doctor")
   .description("Diagnose Railway deployment issues before you deploy")
-  .version("0.1.0");
+  .version("0.3.0");
 
 program
   .command("scan")

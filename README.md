@@ -16,8 +16,10 @@ Railway Doctor catches these issues locally in seconds, with actionable fix sugg
 
 ## Features
 
-- **Fast scanning** - Analyzes your project in under 1 second
-- **Framework detection** - Automatically detects Express, Next.js, NestJS, Django, and more
+- **Framework-agnostic** - Works with ANY Node.js or Python project, not just known frameworks
+- **Fast scanning** - Analyzes your entire project in under 1 second
+- **Multi-file analysis** - Scans all source files, not just entry points
+- **Framework detection** - Automatically detects 10+ frameworks (SvelteKit, Remix, Next.js, Django, and more)
 - **Actionable fixes** - Shows exact before/after code with line numbers
 - **5 comprehensive checks**:
   - PORT configuration (process.env.PORT usage)
@@ -38,9 +40,67 @@ cd railway-doctor
 bun install
 ```
 
+### Make it a Global Executable
+
+To run `railway-doctor` from any directory:
+
+```bash
+# Make the CLI file executable
+chmod +x src/cli.ts
+
+# Link it globally
+bun link
+
+# Add Bun's global bin directory to your PATH (if not already added)
+echo 'export PATH="$HOME/.bun/bin:$PATH"' >> ~/.zshrc  # or ~/.bashrc
+source ~/.zshrc  # Reload your shell, or open a new terminal
+
+# Now you can run from anywhere
+railway-doctor scan /path/to/your/project
+```
+
+To uninstall the global link later:
+
+```bash
+bun unlink
+```
+
+**Alternative: Add to PATH manually**
+
+You can also add the project directory to your PATH:
+
+```bash
+# Add to your ~/.zshrc or ~/.bashrc
+export PATH="$PATH:/path/to/railway-doctor"
+
+# Make the CLI executable
+chmod +x src/cli.ts
+
+# Reload your shell
+source ~/.zshrc  # or ~/.bashrc
+```
+
 ## Usage
 
 ### Scan a project
+
+**After installing globally** (using `bun link`):
+
+```bash
+# Scan current directory
+railway-doctor scan
+
+# Scan specific directory
+railway-doctor scan ./my-project
+
+# Show all checks including passed ones
+railway-doctor scan --verbose
+
+# Output as JSON (for CI/CD)
+railway-doctor scan --json
+```
+
+**For local development** (without global install):
 
 ```bash
 # Scan current directory
@@ -106,12 +166,29 @@ Deployment Likelihood: WILL FAIL
 
 ## Supported Frameworks
 
-- **Express.js** - Full support with framework-specific checks
+Railway Doctor now works with **ANY Node.js or Python project**, not just specific frameworks!
+
+### Fully Supported with Framework-Specific Checks:
+- **SvelteKit** - Full support for modern Svelte apps
+- **Remix** - Full support for Remix apps
+- **Astro** - Full support for Astro sites
+- **Nuxt** - Full support for Nuxt.js apps
 - **Next.js** - Full support with framework-specific checks
+- **Express.js** - Full support with framework-specific checks
 - **NestJS** - Full support with framework-specific checks
 - **Django** - Full support (ALLOWED_HOSTS, whitenoise, gunicorn, DATABASE_URL, CSRF_TRUSTED_ORIGINS)
 - **Flask** - Full support (gunicorn, Procfile, production server checks)
 - **FastAPI** - Full support (uvicorn, Procfile, production server checks)
+
+### Generic Support:
+Even if your framework isn't listed above, Railway Doctor will still scan your project for:
+- Hardcoded ports and missing `process.env.PORT` usage
+- Incorrect host binding (localhost vs 0.0.0.0)
+- Missing start/build scripts
+- Environment variable usage
+- Database configuration issues
+
+This means it works with **Hono, Elysia, Koa, Fastify, SolidStart, Qwik**, and any other Node.js/Python framework!
 
 ## What It Checks
 
@@ -171,19 +248,23 @@ Deployment Likelihood: WILL FAIL
 Try the included test projects:
 
 ```bash
-# Node.js Frameworks
-bun run src/cli.ts scan test-projects/express-broken   # Should find 3 errors
-bun run src/cli.ts scan test-projects/express-working --verbose  # Should pass
-bun run src/cli.ts scan test-projects/nextjs-broken    # Should find 3 errors
-bun run src/cli.ts scan test-projects/nextjs-working --verbose   # Should pass
+# Known Frameworks
+railway-doctor scan test-projects/express-broken   # Should find 3 errors
+railway-doctor scan test-projects/express-working --verbose  # Should pass
+railway-doctor scan test-projects/nextjs-broken    # Should find 3 errors
+railway-doctor scan test-projects/nextjs-working --verbose   # Should pass
+railway-doctor scan test-projects/sveltekit-test --verbose   # SvelteKit support
 
 # Python Frameworks
-bun run src/cli.ts scan test-projects/django-broken    # Django deployment issues
-bun run src/cli.ts scan test-projects/django-working --verbose   # Properly configured
-bun run src/cli.ts scan test-projects/flask-broken     # Flask with dev server
-bun run src/cli.ts scan test-projects/flask-working --verbose    # Production ready
-bun run src/cli.ts scan test-projects/fastapi-broken   # FastAPI configuration issues
-bun run src/cli.ts scan test-projects/fastapi-working --verbose  # Production ready
+railway-doctor scan test-projects/django-broken    # Django deployment issues
+railway-doctor scan test-projects/django-working --verbose   # Properly configured
+railway-doctor scan test-projects/flask-broken     # Flask with dev server
+railway-doctor scan test-projects/flask-working --verbose    # Production ready
+railway-doctor scan test-projects/fastapi-broken   # FastAPI configuration issues
+railway-doctor scan test-projects/fastapi-working --verbose  # Production ready
+
+# Generic/Unknown Frameworks (still works!)
+railway-doctor scan test-projects/generic-nodejs    # Generic Node.js - finds issues
 ```
 
 ## Project Structure
@@ -238,7 +319,15 @@ Built with:
 - [x] Test projects for Django, Flask, and FastAPI
 - [x] Framework-specific checks integration
 
-### Future Enhancements (v0.3.0+)
+### v0.3.0 (Complete - Latest)
+- [x] **Framework-agnostic architecture** - Works on ANY Node.js/Python project
+- [x] **Multi-file scanning** - Scans all source files, not just entry points
+- [x] **Modern framework support** - SvelteKit, Remix, Astro, Nuxt detection
+- [x] Refactored PORT and host checks for comprehensive coverage
+- [x] Standardized check interfaces for consistency
+- [x] No more "unknown framework" dead-ends
+
+### Future Enhancements (v0.4.0+)
 - [ ] Static files configuration checks (Django whitenoise, Express static)
 - [ ] Auto-fix mode (--fix flag to automatically apply fixes)
 - [ ] CI/CD integration (GitHub Action)

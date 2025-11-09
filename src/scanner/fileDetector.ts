@@ -14,6 +14,46 @@ export async function detectFramework(projectPath: string): Promise<Framework> {
       ...packageJson.devDependencies,
     };
 
+    // Check for SvelteKit
+    if (dependencies["@sveltejs/kit"] || existsSync(join(projectPath, "svelte.config.js"))) {
+      const mainFile = await findEntryPoint(projectPath, ["src/routes/+page.svelte", "src/app.html", "svelte.config.js"]);
+      return {
+        name: "sveltekit",
+        version: dependencies["@sveltejs/kit"],
+        mainFile: mainFile || "svelte.config.js",
+      };
+    }
+
+    // Check for Remix
+    if (dependencies["@remix-run/node"] || dependencies["@remix-run/react"]) {
+      const mainFile = await findEntryPoint(projectPath, ["app/root.tsx", "app/entry.server.tsx", "remix.config.js"]);
+      return {
+        name: "remix",
+        version: dependencies["@remix-run/node"] || dependencies["@remix-run/react"],
+        mainFile: mainFile || "remix.config.js",
+      };
+    }
+
+    // Check for Astro
+    if (dependencies.astro || existsSync(join(projectPath, "astro.config.mjs"))) {
+      const mainFile = await findEntryPoint(projectPath, ["src/pages/index.astro", "astro.config.mjs"]);
+      return {
+        name: "astro",
+        version: dependencies.astro,
+        mainFile: mainFile || "astro.config.mjs",
+      };
+    }
+
+    // Check for Nuxt
+    if (dependencies.nuxt || existsSync(join(projectPath, "nuxt.config.ts")) || existsSync(join(projectPath, "nuxt.config.js"))) {
+      const mainFile = await findEntryPoint(projectPath, ["app.vue", "nuxt.config.ts", "nuxt.config.js"]);
+      return {
+        name: "nuxt",
+        version: dependencies.nuxt,
+        mainFile: mainFile || "nuxt.config.ts",
+      };
+    }
+
     // Check for Next.js
     if (dependencies.next || existsSync(join(projectPath, "next.config.js")) || existsSync(join(projectPath, "next.config.mjs"))) {
       const mainFile = await findEntryPoint(projectPath, ["pages/_app.tsx", "pages/_app.js", "app/layout.tsx", "src/app/layout.tsx"]);

@@ -1,6 +1,6 @@
 {
   "name": "railway-doctor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Diagnose Railway deployment issues before you deploy",
   "module": "index.ts",
   "type": "module",
