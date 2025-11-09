@@ -95,7 +95,7 @@ npx railway-doctor scan ./my-project
 
 ### Example Output
 
-```
+```diff
 Railway Deployment Doctor
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -109,25 +109,25 @@ Entry point: server.js
 
    Fix: Use process.env.PORT with a fallback for local development
 
-   - const port = 3000;
-   + const port = process.env.PORT || 3000;
+-  const port = 3000;
++  const port = process.env.PORT || 3000;
 
 [X] App binds to localhost/127.0.0.1, which won't work on Railway
    File: server.js:12
 
    Fix: Bind to 0.0.0.0 to accept external connections
 
-   - app.listen(port, 'localhost')
-   + app.listen(port, "0.0.0.0")
+-  app.listen(port, 'localhost')
++  app.listen(port, "0.0.0.0")
 
 [X] No "start" script found in package.json
    File: package.json
 
    Fix: Add start script for Express
 
-   + "scripts": {
-  "start": "node server.js"
-}
++  "scripts": {
++    "start": "node server.js"
++  }
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Summary
