@@ -1,0 +1,15 @@
+{
+  "name": "express-broken-example",
+  "version": "1.0.0",
+  "description": "Express app with common Railway deployment issues",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
