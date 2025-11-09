@@ -1,0 +1,29 @@
+{
+  "name": "railway-doctor",
+  "version": "0.2.0",
+  "description": "Diagnose Railway deployment issues before you deploy",
+  "module": "index.ts",
+  "type": "module",
+  "bin": {
+    "railway-doctor": "./src/cli.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts scan",
+    "start": "bun run src/cli.ts"
+  },
+  "keywords": ["railway", "deployment", "debugging", "cli"],
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "^24.10.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.28.5",
+    "chalk": "^5.6.2",
+    "commander": "^14.0.2",
+    "glob": "^11.0.3"
+  }
+}
