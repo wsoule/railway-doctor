@@ -12,7 +12,6 @@
     "start": "bun run src/cli.ts"
   },
   "keywords": ["railway", "deployment", "debugging", "cli"],
-  "private": true,
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^24.10.0"
